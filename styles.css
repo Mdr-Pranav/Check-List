@@ -1,0 +1,734 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #161621;
+    background-image: url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Medieval frame decorations */
+.container {
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    padding: 30px 0;
+}
+
+.medieval-frame-top,
+.medieval-frame-bottom {
+    position: absolute;
+    width: calc(100% + 40px);
+    height: 20px;
+    left: -20px;
+    background-color: rgba(15, 20, 40, 0.25);
+    border: none; /* Removed border */
+    border-radius: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* Darker background with light glow lines */
+    background: linear-gradient(to right, 
+        rgba(15, 40, 80, 0.4), 
+        rgba(15, 40, 100, 0.5), 
+        rgba(15, 40, 80, 0.4));
+    box-shadow: 0 0 35px 10px rgba(58, 128, 255, 0.95);
+}
+
+/* Remove pulsing animation for frames to match image */
+@keyframes framePulse {
+    0% { box-shadow: 0 0 30px 5px rgba(58, 128, 255, 0.8); }
+    100% { box-shadow: 0 0 40px 10px rgba(58, 128, 255, 1); }
+}
+
+.medieval-frame-top {
+    top: -10px;
+    border-bottom: none;
+}
+
+.medieval-frame-bottom {
+    bottom: -10px;
+    border-top: none;
+}
+
+.medieval-frame-top::before,
+.medieval-frame-bottom::before {
+    content: '';
+    position: absolute;
+    width: 95%;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        rgba(58, 128, 255, 0) 0%, 
+        rgba(58, 128, 255, 0.8) 15%, 
+        #a0d8ff 50%, /* Lighter blue in center */
+        rgba(58, 128, 255, 0.8) 85%, 
+        rgba(58, 128, 255, 0) 100%);
+    box-shadow: 0 0 12px 3px rgba(58, 128, 255, 1);
+}
+
+/* Additional lines for scan effect */
+.medieval-frame-top::after,
+.medieval-frame-bottom::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(58, 128, 255, 0.1) 20%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(58, 128, 255, 0.1) 80%,
+        transparent 100%);
+    animation: scanEffect 4s infinite linear;
+    top: 0;
+    left: -100%;
+}
+
+@keyframes scanEffect {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(200%); }
+}
+
+/* Update notifications to match */
+.notification-dialog .medieval-frame-top,
+.notification-dialog .medieval-frame-bottom {
+    animation: none;
+    box-shadow: 0 0 30px 5px rgba(58, 128, 255, 0.9);
+    border: none; /* Removed border */
+}
+
+.notification-dialog .medieval-frame-top::after,
+.notification-dialog .medieval-frame-bottom::after {
+    display: block;
+}
+
+/* Add circuit patterns to the frames */
+.medieval-frame-top .circuit-pattern,
+.medieval-frame-bottom .circuit-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background-image: 
+        linear-gradient(90deg, rgba(58, 128, 255, 0.2) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(58, 128, 255, 0.2) 1px, transparent 1px);
+    background-size: 15px 3px; /* Smaller, more subtle pattern */
+    background-position: center;
+}
+
+/* Enhanced medieval frame center glow */
+.medieval-frame-center {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(15, 20, 40, 0.8);
+    border: 1px solid #3a80ff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6;
+    box-shadow: 0 0 10px rgba(58, 128, 255, 0.6), inset 0 0 5px rgba(58, 128, 255, 0.4);
+    /* Enhanced radial glow */
+    background: radial-gradient(
+        circle at center,
+        rgba(58, 128, 255, 0.6) 0%,
+        rgba(58, 128, 255, 0.3) 40%,
+        rgba(15, 20, 40, 0.8) 70%
+    );
+    animation: centerGlow 3s infinite alternate;
+}
+
+@keyframes centerGlow {
+    0% { box-shadow: 0 0 10px rgba(58, 128, 255, 0.6), inset 0 0 5px rgba(58, 128, 255, 0.4); }
+    100% { box-shadow: 0 0 20px rgba(58, 128, 255, 0.8), inset 0 0 10px rgba(58, 128, 255, 0.6); }
+}
+
+.medieval-frame-top-center {
+    top: -15px;
+    left: calc(50% - 15px);
+}
+
+.medieval-frame-bottom-center {
+    bottom: -15px;
+    left: calc(50% - 15px);
+}
+
+.medieval-frame-center::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle, #54a9ff 0%, rgba(58, 128, 255, 0.4) 70%, rgba(15, 20, 40, 0) 100%);
+    border-radius: 50%;
+    animation: centerPulse 3s infinite alternate;
+}
+
+@keyframes centerPulse {
+    0% { opacity: 0.7; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Enhanced ornaments glow */
+.medieval-ornament {
+    display: none; /* Hide all ornaments */
+}
+
+.ornament-top-left,
+.ornament-top-right,
+.ornament-bottom-left,
+.ornament-bottom-right {
+    display: none; /* Hide all corner ornaments */
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0.5; transform: scale(0.9); }
+}
+
+/* Adjust the quest card position for the frames */
+.quest-card {
+    margin: 20px 5px; /* Adjusted to work with new frame size */
+    max-width: 100%;
+    width: auto;
+    background-color: rgba(15, 20, 40, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 100, 255, 0.3);
+    border: 2px solid #3a80ff;
+    position: relative;
+}
+
+/* Ornate corner decorations */
+.quest-card::before,
+.quest-card::after,
+.quest-card .corner-top-right,
+.quest-card .corner-bottom-left,
+.quest-card .corner-bottom-right {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><path d="M0,0 L30,0 L30,5 L5,5 L5,30 L0,30 Z" fill="%233a80ff"/><path d="M10,0 L15,0 L15,2 L10,2 Z" fill="%233a80ff"/><path d="M0,10 L2,10 L2,15 L0,15 Z" fill="%233a80ff"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 10;
+}
+
+.quest-card::before {
+    top: 0;
+    left: 0;
+    transform: rotate(0deg);
+}
+
+.quest-card::after {
+    top: 0;
+    right: 0;
+    transform: rotate(90deg);
+}
+
+.quest-card .corner-bottom-left {
+    bottom: 0;
+    left: 0;
+    transform: rotate(270deg);
+}
+
+.quest-card .corner-bottom-right {
+    bottom: 0;
+    right: 0;
+    transform: rotate(180deg);
+}
+
+.quest-header {
+    background-color: rgba(15, 25, 50, 0.8);
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #3a80ff;
+    position: relative;
+}
+
+.quest-header i {
+    color: #3a80ff;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.quest-header h1 {
+    color: white;
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: normal;
+}
+
+.quest-content {
+    padding: 20px;
+    color: white;
+}
+
+.daily-quest {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #ccc;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.5;
+    letter-spacing: 1px;
+}
+
+.goals-title {
+    color: white;
+    margin-bottom: 15px;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+#task-list {
+    list-style: none;
+    margin-bottom: 25px;
+}
+
+.task-item {
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 3px;
+    background-color: rgba(30, 40, 80, 0.3);
+    border-left: 1px solid #3a80ff;
+}
+
+.task-name {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.task-text {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.task-progress {
+    font-size: 12px;
+    color: #3a80ff;
+    margin-left: 15px;
+}
+
+.task-delete {
+    color: #ff4757;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 5px;
+}
+
+.completed .task-text {
+    text-decoration: line-through;
+    color: #3a80ff;
+}
+
+.add-task-container {
+    display: flex;
+    margin-bottom: 25px;
+}
+
+#new-task {
+    flex-grow: 1;
+    padding: 8px 10px;
+    border: 1px solid #3a80ff;
+    background-color: rgba(30, 40, 80, 0.3);
+    color: white;
+    border-radius: 3px 0 0 3px;
+    font-size: 12px;
+}
+
+#new-task::placeholder {
+    color: #6688aa;
+}
+
+#add-task-btn {
+    padding: 8px 12px;
+    background-color: #3a80ff;
+    color: white;
+    border: none;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+}
+
+.caution {
+    text-align: center;
+    color: #ff4757;
+    margin-bottom: 25px;
+    padding: 12px 10px; /* Added horizontal padding */
+    border-top: 1px solid #ff4757;
+    border-bottom: 1px solid #ff4757;
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    background-color: rgba(255, 71, 87, 0.1); /* Subtle red background */
+    box-shadow: 0 0 15px rgba(255, 71, 87, 0.4), inset 0 0 5px rgba(255, 71, 87, 0.2); /* Red glow */
+    border-radius: 3px; /* Slightly rounded corners */
+    position: relative; /* For ::before element */
+    animation: cautionPulse 4s infinite alternate; /* Pulsing animation */
+}
+
+/* Create pulsing animation for caution box */
+@keyframes cautionPulse {
+    0% { box-shadow: 0 0 15px rgba(255, 71, 87, 0.4), inset 0 0 5px rgba(255, 71, 87, 0.2); }
+    100% { box-shadow: 0 0 25px rgba(255, 71, 87, 0.6), inset 0 0 15px rgba(255, 71, 87, 0.3); }
+}
+
+.caution::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(255, 71, 87, 0.25) 0%,
+        rgba(255, 20, 40, 0.1) 70%,
+        transparent 100%
+    );
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+/* Brighter text to stand out against the background */
+.caution p {
+    text-shadow: 0 0 8px rgba(255, 71, 87, 0.6);
+    font-weight: bold;
+}
+
+.timer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: #3a80ff;
+    position: relative;
+    margin-top: 5px;
+    padding-bottom: 15px;
+    height: 80px;
+}
+
+.timer::before {
+    content: '';
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    border: 1px solid rgba(58, 128, 255, 0.3);
+    border-top: 1px solid #3a80ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(58, 128, 255, 0.2), inset 0 0 15px rgba(58, 128, 255, 0.1);
+    animation: spin 10s linear infinite;
+    z-index: 0;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#reset-time {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: 15px 0 5px;
+    text-shadow: 0 0 5px rgba(58, 128, 255, 0.7);
+    position: relative;
+    z-index: 1;
+}
+
+.timer::after {
+    content: 'until reset';
+    font-size: 10px;
+    color: #6688aa;
+    letter-spacing: 1px;
+    margin-top: 2px;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 500px) {
+    .quest-card {
+        border-radius: 5px;
+        margin: 15px 5px; /* Adjusted for mobile */
+    }
+    
+    .container {
+        padding: 25px 0; /* Adjusted for mobile */
+        max-width: 100%;
+    }
+    
+    .medieval-frame-top,
+    .medieval-frame-bottom {
+        width: calc(100% + 30px); /* Slightly smaller on mobile */
+        left: -15px;
+    }
+    
+    .quest-header h1 {
+        font-size: 12px;
+    }
+    
+    .daily-quest {
+        font-size: 12px;
+    }
+    
+    body {
+        padding: 10px;
+    }
+    
+    #new-task, #add-task-btn {
+        height: 40px;
+    }
+    
+    .task-item {
+        padding: 10px;
+    }
+    
+    .task-delete {
+        padding: 8px;
+    }
+    
+    .notification-dialog .container {
+        max-width: 90%;
+        padding: 22px 0;
+    }
+    
+    .device-indicator {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+@media (max-width: 350px) {
+    .quest-content {
+        padding: 15px 12px;
+    }
+    
+    .quest-header h1 {
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+}
+
+/* Horizontal border decorations */
+.quest-card .border-top,
+.quest-card .border-bottom {
+    position: absolute;
+    height: 8px;
+    width: calc(100% + 20px);
+    left: -10px;
+    background: linear-gradient(90deg, 
+        rgba(58, 128, 255, 0) 0%, 
+        rgba(58, 128, 255, 0.8) 20%, 
+        #54a9ff 50%, 
+        rgba(58, 128, 255, 0.8) 80%, 
+        rgba(58, 128, 255, 0) 100%);
+    z-index: 15;
+    overflow: hidden;
+}
+
+.quest-card .border-top {
+    top: -4px;
+    box-shadow: 0 0 20px 5px rgba(84, 169, 255, 0.8);
+}
+
+.quest-card .border-bottom {
+    bottom: -4px;
+    box-shadow: 0 0 20px 5px rgba(84, 169, 255, 0.8);
+}
+
+/* Remove loading animation on quest box edges */
+.quest-card .border-top::after,
+.quest-card .border-bottom::after {
+    display: none;
+}
+
+/* Notification dialog styles */
+.notification-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: none;
+}
+
+.notification-dialog.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notification-dialog .quest-card {
+    min-width: 300px;
+    max-width: 100%;
+    text-align: center;
+    background-color: rgba(10, 15, 30, 0.85);
+    transform: scale(1.05);
+    animation: pulseIn 0.3s forwards;
+    margin: 25px 10px;
+}
+
+@keyframes pulseIn {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.notification-dialog .quest-content {
+    padding: 30px 20px;
+}
+
+.notification-dialog .message {
+    margin-bottom: 30px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #eee;
+}
+
+.notification-dialog .message p:first-child {
+    margin-bottom: 15px;
+}
+
+.notification-dialog .message p:nth-child(2) {
+    color: #54a9ff;
+    margin-bottom: 15px;
+}
+
+.notification-dialog .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.notification-dialog .button {
+    padding: 8px 25px;
+    background-color: rgba(15, 25, 50, 0.8);
+    border: 1px solid #3a80ff;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    min-width: 80px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.notification-dialog .button:hover {
+    background-color: rgba(58, 128, 255, 0.3);
+    box-shadow: 0 0 10px rgba(58, 128, 255, 0.5);
+}
+
+/* Remove the medieval corner diamonds */
+.medieval-corner {
+    display: none;
+}
+
+/* Additional medieval frame styles */
+.medieval-frame-top::after,
+.medieval-frame-bottom::after {
+    display: none;
+}
+
+@keyframes medievalLightSlide {
+    0% { left: -50%; transform: translateX(0); }
+    100% { left: 0; transform: translateX(100%); }
+}
+
+/* Notification dialog container adjustments */
+.notification-dialog .container {
+    max-width: 380px;
+    padding: 25px 0;
+}
+
+/* Match notification dialog frame styles to main frame */
+.notification-dialog .medieval-frame-top,
+.notification-dialog .medieval-frame-bottom,
+.notification-dialog .medieval-frame-center,
+.notification-dialog .medieval-ornament {
+    /* Inherit all the same glow animations */
+    animation-duration: 2.5s; /* Slightly faster for variation */
+}
+
+.notification-dialog .medieval-frame-center::before {
+    animation-duration: 2.5s;
+}
+
+/* Restore the quest-card border properties */
+.quest-card .border-top::before,
+.quest-card .border-bottom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(90deg, 
+        rgba(58, 128, 255, 0.1) 0px, 
+        rgba(58, 128, 255, 0.3) 2px, 
+        rgba(58, 128, 255, 0.1) 4px);
+}
+
+/* Styles for tasks completed by another device */
+.task-item.completed-by-other {
+    border-left: 2px solid #ff9500;
+    position: relative;
+}
+
+.task-item.completed-by-other::after {
+    content: '✓';
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff9500;
+    font-size: 12px;
+}
+
+.device-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #54ff9f;
+    box-shadow: 0 0 5px rgba(84, 255, 159, 0.7);
+    margin-left: auto;
+    position: relative;
+    cursor: pointer;
+}
+
+.device-indicator::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: 2px;
+    left: 2px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    opacity: 0.5;
+} 

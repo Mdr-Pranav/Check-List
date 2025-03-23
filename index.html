@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Daily Quest Checklist</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Medieval frame elements -->
+        <div class="medieval-frame-top">
+            <div class="circuit-pattern"></div>
+        </div>
+        <div class="medieval-frame-bottom">
+            <div class="circuit-pattern"></div>
+        </div>
+        <div class="medieval-frame-center medieval-frame-top-center"></div>
+        <div class="medieval-frame-center medieval-frame-bottom-center"></div>
+        <div class="medieval-ornament ornament-top-left"></div>
+        <div class="medieval-ornament ornament-top-right"></div>
+        <div class="medieval-ornament ornament-bottom-left"></div>
+        <div class="medieval-ornament ornament-bottom-right"></div>
+        
+        <!-- Medieval corner elements -->
+        <div class="medieval-corner medieval-corner-top-left"></div>
+        <div class="medieval-corner medieval-corner-top-right"></div>
+        <div class="medieval-corner medieval-corner-bottom-left"></div>
+        <div class="medieval-corner medieval-corner-bottom-right"></div>
+        
+        <div class="quest-card">
+            <!-- Border decoration elements -->
+            <div class="border-top"></div>
+            <div class="border-bottom"></div>
+            
+            <!-- Corner decoration elements -->
+            <div class="corner-top-right"></div>
+            <div class="corner-bottom-left"></div>
+            <div class="corner-bottom-right"></div>
+            
+            <div class="quest-header">
+                <i class="fas fa-info-circle"></i>
+                <h1>QUEST INFO</h1>
+                <div class="device-indicator" id="device-indicator" title="Current device"></div>
+            </div>
+            
+            <div class="quest-content">
+                <h2 class="daily-quest">COMPLETE DAILY MISSIONS</h2>
+                
+                <h3 class="goals-title">GOAL</h3>
+                
+                <ul id="task-list">
+                    <!-- Tasks will be added here dynamically -->
+                </ul>
+                
+                <div class="add-task-container">
+                    <input type="text" id="new-task" placeholder="Add new task...">
+                    <button id="add-task-btn"><i class="fas fa-plus"></i></button>
+                </div>
+                
+                <div class="caution">
+                    <p>CAUTION - IF THE DAILY QUEST<br>REMAINS INCOMPLETE, PENALTIES<br>WILL BE GIVEN ACCORDINGLY.</p>
+                </div>
+                
+                <div class="timer">
+                    <span id="reset-time"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification Dialog -->
+    <div class="notification-dialog" id="notification">
+        <div class="container">
+            <!-- Medieval frame elements for notification -->
+            <div class="medieval-frame-top">
+                <div class="circuit-pattern"></div>
+            </div>
+            <div class="medieval-frame-bottom">
+                <div class="circuit-pattern"></div>
+            </div>
+            <div class="medieval-frame-center medieval-frame-top-center"></div>
+            <div class="medieval-frame-center medieval-frame-bottom-center"></div>
+            <div class="medieval-ornament ornament-top-left"></div>
+            <div class="medieval-ornament ornament-top-right"></div>
+            <div class="medieval-ornament ornament-bottom-left"></div>
+            <div class="medieval-ornament ornament-bottom-right"></div>
+            
+            <!-- Medieval corner elements for notification -->
+            <div class="medieval-corner medieval-corner-top-left"></div>
+            <div class="medieval-corner medieval-corner-top-right"></div>
+            <div class="medieval-corner medieval-corner-bottom-left"></div>
+            <div class="medieval-corner medieval-corner-bottom-right"></div>
+            
+            <div class="quest-card">
+                <!-- Border decoration elements -->
+                <div class="border-top"></div>
+                <div class="border-bottom"></div>
+                
+                <!-- Corner decoration elements -->
+                <div class="corner-top-right"></div>
+                <div class="corner-bottom-left"></div>
+                <div class="corner-bottom-right"></div>
+                
+                <div class="quest-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h1>NOTIFICATION</h1>
+                    <div class="device-indicator" id="notification-device-indicator" title="Current device"></div>
+                </div>
+                
+                <div class="quest-content">
+                    <div class="message">
+                        <p>You have received a reward</p>
+                        <p>[Penalty Quest: Survival]</p>
+                        <p>Reset the Quest?</p>
+                    </div>
+                    
+                    <div class="buttons">
+                        <button class="button" id="yes-btn">Yes</button>
+                        <button class="button" id="no-btn">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
