@@ -257,10 +257,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add default tasks if list is empty
         if (tasks.length === 0) {
             const defaultTasks = [
-                { id: 1, text: 'PUSH-UPS', completed: false, progress: 0, target: 10, createdBy: deviceId },
-                { id: 2, text: 'SIT-UPS', completed: false, progress: 0, target: 10, createdBy: deviceId },
-                { id: 3, text: 'SQUATS', completed: false, progress: 0, target: 10, createdBy: deviceId },
-                { id: 4, text: 'RUN', completed: false, progress: 0, target: 5, createdBy: deviceId }
+                { id: 1, text: '100 PUSH-UPS', completed: false, progress: 0, target: 100, createdBy: deviceId },
+                { id: 2, text: '100 SIT-UPS', completed: false, progress: 0, target: 100, createdBy: deviceId },
+                { id: 3, text: '100 SQUATS', completed: false, progress: 0, target: 100, createdBy: deviceId }
             ];
             
             tasks = defaultTasks;
