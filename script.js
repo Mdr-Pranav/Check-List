@@ -5,8 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const addTaskBtn = document.getElementById('add-task-btn');
     const resetTimeElement = document.getElementById('reset-time');
     const notificationDialog = document.getElementById('notification');
+    const resetConfirmationDialog = document.getElementById('reset-confirmation');
     const yesBtn = document.getElementById('yes-btn');
     const noBtn = document.getElementById('no-btn');
+    const resetYesBtn = document.getElementById('reset-yes-btn');
+    const resetNoBtn = document.getElementById('reset-no-btn');
+
+    // Flag to track initial page load
+    let isInitialLoad = true;
 
     // Cookie management functions
     function setCookie(name, value, days) {
@@ -92,6 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
         notificationDeviceIndicator.title = `Current device: ${deviceName}`;
     }
     
+    // Set reset confirmation dialog device indicator tooltip
+    const resetDeviceIndicator = document.getElementById('reset-device-indicator');
+    if (resetDeviceIndicator) {
+        resetDeviceIndicator.title = `Current device: ${deviceName}`;
+    }
+    
     // Load tasks from cookies or localStorage as fallback
     let tasks = getCookie('quest_tasks') || JSON.parse(localStorage.getItem('dailyTasks')) || [];
     
@@ -118,6 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update reset time display
     updateResetTimeDisplay();
     
+    // Set initial load flag to false after initial setup
+    setTimeout(() => {
+        isInitialLoad = false;
+    }, 100);
+    
     // Add event listeners
     addTaskBtn.addEventListener('click', addTask);
     newTaskInput.addEventListener('keypress', (e) => {
@@ -128,25 +145,42 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Event listeners for notification dialog buttons
     yesBtn.addEventListener('click', function() {
-        // Reset all tasks
-        tasks.forEach(task => {
-            task.completed = false;
-            task.progress = 0;
-            task.lastCompletedBy = null;
-            task.lastCompletedAt = null;
-            task.lastCompletedByName = null;
-        });
-        // Save the reset state
-        saveTasks();
-        renderTasks();
+        // Reset all cookies
+        deleteCookie('quest_tasks');
+        deleteCookie('quest_last_reset');
+        deleteCookie('quest_all_completed');
+        
+        // Reset tasks array and re-render
+        tasks = [];
+        renderTasks(); // This will add the default tasks
+        
         // Hide the notification dialog
         hideNotification();
-        // Clear stored task data
-        deleteCookie('quest_tasks');
     });
     
     noBtn.addEventListener('click', () => {
+        // Just hide the notification dialog
         hideNotification();
+    });
+    
+    // Event listeners for reset confirmation dialog buttons
+    resetYesBtn.addEventListener('click', () => {
+        // Reset all cookies
+        deleteCookie('quest_tasks');
+        deleteCookie('quest_last_reset');
+        deleteCookie('quest_all_completed');
+        
+        // Reset tasks array and re-render
+        tasks = [];
+        renderTasks(); // This will add the default tasks
+        
+        // Hide reset confirmation dialog
+        hideResetConfirmation();
+    });
+    
+    resetNoBtn.addEventListener('click', () => {
+        // Just hide the reset confirmation dialog
+        hideResetConfirmation();
     });
     
     // Set interval to check for reset and update timer
@@ -290,8 +324,10 @@ document.addEventListener('DOMContentLoaded', () => {
             saveTasks();
             renderTasks();
             
-            // Show notification on new day
-            showNotification();
+            // Show notification on new day, but not on initial load
+            if (!isInitialLoad) {
+                showNotification();
+            }
         }
     }
     
@@ -318,7 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save completed state to prevent showing multiple notifications
             if (!getCookie('quest_all_completed')) {
                 setCookie('quest_all_completed', true, 1);
-                showNotification();
+                // Don't show notification on initial load
+                if (!isInitialLoad) {
+                    showNotification();
+                }
             }
         } else {
             deleteCookie('quest_all_completed');
@@ -331,5 +370,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function hideNotification() {
         notificationDialog.classList.remove('active');
+    }
+    
+    function showResetConfirmation() {
+        resetConfirmationDialog.classList.add('active');
+    }
+    
+    function hideResetConfirmation() {
+        resetConfirmationDialog.classList.remove('active');
     }
 }); 

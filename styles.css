@@ -731,4 +731,37 @@ body {
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.7);
     opacity: 0.5;
+}
+
+/* Styling for the Reset Confirmation Dialog */
+#reset-confirmation .quest-header {
+    background-color: rgba(255, 71, 87, 0.3);
+    border-bottom: 1px solid #ff4757;
+}
+
+#reset-confirmation .quest-header h1 {
+    color: #ff4757;
+    text-shadow: 0 0 5px rgba(255, 71, 87, 0.7);
+}
+
+#reset-confirmation .quest-header i {
+    color: #ff4757;
+}
+
+#reset-confirmation .message {
+    color: #ff4757;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 71, 87, 0.5);
+}
+
+#reset-confirmation .button {
+    border-color: #ff4757;
+}
+
+#reset-confirmation .button:hover {
+    background-color: rgba(255, 71, 87, 0.2);
+}
+
+#reset-confirmation #reset-yes-btn {
+    background-color: rgba(255, 71, 87, 0.15);
 } 
