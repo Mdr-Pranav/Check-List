@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const taskList = document.getElementById('task-list');
     const newTaskInput = document.getElementById('new-task');
+    const taskTargetInput = document.getElementById('task-target');
     const addTaskBtn = document.getElementById('add-task-btn');
     const resetTimeElement = document.getElementById('reset-time');
     const notificationDialog = document.getElementById('notification');
@@ -194,21 +195,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function addTask() {
         const taskText = newTaskInput.value.trim();
         if (taskText) {
+            // Get the target value from input (or 0 if empty)
+            const targetValue = taskTargetInput.value.trim() ? parseInt(taskTargetInput.value, 10) : 0;
+            
             const newTask = {
                 id: Date.now(),
                 text: taskText,
                 completed: false,
                 progress: 0,
-                target: 10,
+                target: targetValue,
                 createdBy: deviceId,
                 lastCompletedBy: null,
-                lastCompletedAt: null
+                lastCompletedAt: null,
+                lastCompletedByName: null
             };
             
             tasks.push(newTask);
             saveTasks();
             renderTasks();
             newTaskInput.value = '';
+            taskTargetInput.value = '';
         }
     }
     
@@ -262,7 +268,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const taskProgress = document.createElement('span');
             taskProgress.className = 'task-progress';
-            taskProgress.textContent = `[${task.completed ? task.target : 0}/${task.target}]`;
+            
+            // Display "DONE" instead of progress if target is 0
+            if (task.target === 0) {
+                // Always show DONE, but with different styles based on completion
+                taskProgress.textContent = 'DONE';
+                if (!task.completed) {
+                    taskProgress.classList.add('pending');
+                }
+            } else {
+                // For numbered tasks, add a data attribute to help with styling
+                taskProgress.setAttribute('data-count', 'true');
+                taskProgress.textContent = `[${task.completed ? task.target : 0}/${task.target}]`;
+            }
             
             // Add device info if completed by a different device
             if (task.completed && task.lastCompletedBy && task.lastCompletedBy !== deviceId) {
@@ -291,9 +309,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add default tasks if list is empty
         if (tasks.length === 0) {
             const defaultTasks = [
-                { id: 1, text: '100 PUSH-UPS', completed: false, progress: 0, target: 100, createdBy: deviceId },
-                { id: 2, text: '100 SIT-UPS', completed: false, progress: 0, target: 100, createdBy: deviceId },
-                { id: 3, text: '100 SQUATS', completed: false, progress: 0, target: 100, createdBy: deviceId }
+                { id: 1, text: 'PUSH-UPS', completed: false, progress: 0, target: 100, createdBy: deviceId },
+                { id: 2, text: 'SIT-UPS', completed: false, progress: 0, target: 100, createdBy: deviceId },
+                { id: 3, text: 'SQUATS', completed: false, progress: 0, target: 100, createdBy: deviceId },
+                { id: 4, text: 'STUDY', completed: false, progress: 0, target: 0, createdBy: deviceId }
             ];
             
             tasks = defaultTasks;

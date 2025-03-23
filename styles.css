@@ -328,10 +328,40 @@ body {
     letter-spacing: 1px;
 }
 
+/* Style for task progress and DONE text */
 .task-progress {
-    font-size: 12px;
-    color: #3a80ff;
-    margin-left: 15px;
+    margin-left: 8px;
+    font-size: 11px;
+    color: rgba(58, 128, 255, 0.9);
+    min-width: 50px;
+    text-align: right;
+}
+
+/* Style for DONE text when not completed yet */
+.task-progress.pending {
+    color: rgba(58, 128, 255, 0.9);
+    opacity: 0.8;
+    font-weight: normal;
+}
+
+/* Proper styling for DONE text when completed */
+.task-item.completed .task-progress {
+    color: #54a9ff;
+}
+
+/* Special styling for DONE text */
+.task-item.completed .task-progress:not(:empty):not(.pending) {
+    color: #54ff9f;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(84, 255, 159, 0.5);
+}
+
+/* Emphasize DONE text when completed */
+.task-item.completed .task-progress:not([data-count]) {
+    color: #54ff9f;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(84, 255, 159, 0.7);
 }
 
 .task-delete {
@@ -350,30 +380,50 @@ body {
 
 .add-task-container {
     display: flex;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 #new-task {
-    flex-grow: 1;
-    padding: 8px 10px;
-    border: 1px solid #3a80ff;
-    background-color: rgba(30, 40, 80, 0.3);
-    color: white;
+    flex: 1;
+    background-color: rgba(10, 15, 30, 0.7);
+    color: #fff;
+    padding: 8px 15px;
+    border: 1px solid rgba(85, 120, 255, 0.5);
     border-radius: 3px 0 0 3px;
     font-size: 12px;
 }
 
-#new-task::placeholder {
-    color: #6688aa;
+#task-target {
+    width: 50px;
+    background-color: rgba(10, 15, 30, 0.7);
+    color: #fff;
+    padding: 8px 5px;
+    border: 1px solid rgba(85, 120, 255, 0.5);
+    border-left: none;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Hide spinners for number input */
+#task-target::-webkit-inner-spin-button, 
+#task-target::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#task-target::placeholder {
+    color: rgba(200, 200, 255, 0.5);
 }
 
 #add-task-btn {
-    padding: 8px 12px;
-    background-color: #3a80ff;
-    color: white;
-    border: none;
+    width: 36px;
+    background-color: rgba(58, 128, 255, 0.3);
+    color: #fff;
+    border: 1px solid rgba(85, 120, 255, 0.5);
+    border-left: none;
     border-radius: 0 3px 3px 0;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .caution {
@@ -521,6 +571,20 @@ body {
     .device-indicator {
         width: 12px;
         height: 12px;
+    }
+    
+    /* Adjust task progress spacing on mobile */
+    .task-progress {
+        min-width: 40px;
+        margin-left: 5px;
+    }
+    
+    /* Make DONE text more visible on mobile */
+    .task-item.completed .task-progress:not([data-count]) {
+        font-size: 10px;
+        padding: 2px 5px;
+        background-color: rgba(84, 255, 159, 0.15);
+        border-radius: 3px;
     }
 }
 
