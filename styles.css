@@ -367,6 +367,15 @@ body {
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    gap: 10px;
+}
+
+.drag-handle {
+    cursor: move;
+    color: #3a80ff;
+    font-size: 16px;
+    padding: 0 5px;
+    user-select: none;
 }
 
 .task-text {

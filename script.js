@@ -269,6 +269,14 @@ document.addEventListener('DOMContentLoaded', () => {
             taskName.className = 'task-name';
             taskName.addEventListener('click', () => toggleTaskCompletion(task.id));
             
+            // Add drag handle
+            const dragHandle = document.createElement('div');
+            dragHandle.className = 'drag-handle';
+            dragHandle.innerHTML = '⋮⋮';
+            dragHandle.addEventListener('mousedown', (e) => {
+                e.stopPropagation(); // Prevent task completion when dragging
+            });
+            
             const taskText = document.createElement('span');
             taskText.className = 'task-text';
             taskText.textContent = task.text;
@@ -305,6 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 deleteTask(task.id);
             });
             
+            taskName.appendChild(dragHandle);
             taskName.appendChild(taskText);
             taskName.appendChild(taskProgress);
             taskItem.appendChild(taskName);
