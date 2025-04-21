@@ -253,10 +253,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function renderTasks() {
         taskList.innerHTML = '';
-        
-        tasks.forEach(task => {
+        tasks.forEach((task, index) => {
             const taskItem = document.createElement('li');
             taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
+            taskItem.draggable = true;
+            taskItem.dataset.taskId = task.id;
+            
+            // Add drag event listeners
+            taskItem.addEventListener('dragstart', handleDragStart);
+            taskItem.addEventListener('dragover', handleDragOver);
+            taskItem.addEventListener('drop', handleDrop);
+            taskItem.addEventListener('dragend', handleDragEnd);
             
             const taskName = document.createElement('div');
             taskName.className = 'task-name';
@@ -397,5 +404,47 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function hideResetConfirmation() {
         resetConfirmationDialog.classList.remove('active');
+    }
+
+    // Drag and drop functions
+    let draggedTask = null;
+
+    function handleDragStart(e) {
+        draggedTask = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.innerHTML);
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const taskElement = e.target.closest('.task-item');
+        if (taskElement && taskElement !== draggedTask) {
+            const rect = taskElement.getBoundingClientRect();
+            const midY = rect.top + rect.height / 2;
+            if (e.clientY < midY) {
+                taskElement.parentNode.insertBefore(draggedTask, taskElement);
+            } else {
+                taskElement.parentNode.insertBefore(draggedTask, taskElement.nextSibling);
+            }
+        }
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+
+    function handleDragEnd() {
+        this.classList.remove('dragging');
+        updateTaskOrder();
+    }
+
+    function updateTaskOrder() {
+        const newOrder = Array.from(taskList.children).map(task => parseInt(task.dataset.taskId));
+        tasks.sort((a, b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
+        saveTasks();
     }
 }); 

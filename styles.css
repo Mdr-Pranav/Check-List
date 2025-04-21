@@ -312,6 +312,53 @@ body {
     border-radius: 3px;
     background-color: rgba(30, 40, 80, 0.3);
     border-left: 1px solid #3a80ff;
+    cursor: move;
+}
+
+.task-item.dragging {
+    opacity: 0.5;
+    background-color: rgba(30, 40, 80, 0.5);
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.task-handle {
+    cursor: move;
+    color: #3a80ff;
+    font-size: 16px;
+    padding: 0 5px;
+}
+
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff4757;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 5px;
+}
+
+.task-item:hover {
+    background-color: rgba(30, 40, 80, 0.4);
+}
+
+.task-item.completed {
+    background-color: rgba(30, 40, 80, 0.2);
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    color: #3a80ff;
 }
 
 .task-name {
@@ -326,6 +373,14 @@ body {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    flex: 1;
+}
+
+.task-progress {
+    margin-left: auto;
+    padding-left: 10px;
+    min-width: 50px;
+    text-align: right;
 }
 
 /* Style for task progress and DONE text */
