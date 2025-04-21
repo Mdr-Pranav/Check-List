@@ -312,6 +312,7 @@ body {
     border-radius: 3px;
     background-color: rgba(30, 40, 80, 0.3);
     border-left: 1px solid #3a80ff;
+    min-height: 50px;
     cursor: move;
 }
 
@@ -892,4 +893,55 @@ body {
 
 #reset-confirmation #reset-yes-btn {
     background-color: rgba(255, 71, 87, 0.15);
+}
+
+.reorder-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-right: 10px;
+    min-width: 40px;
+    height: 50px;
+    justify-content: center;
+}
+
+.move-btn {
+    background: none;
+    border: none;
+    color: #3a80ff;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 20px;
+    opacity: 0.7;
+    transition: all 0.2s;
+    line-height: 1;
+    min-width: 30px;
+    text-align: center;
+    visibility: visible;
+}
+
+.move-btn[style*="display: none"] {
+    visibility: hidden;
+}
+
+.task-name {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .reorder-buttons {
+        min-width: 50px;
+        height: 60px;
+    }
+    
+    .move-btn {
+        padding: 6px 10px;
+        font-size: 24px;
+        min-width: 40px;
+    }
 } 

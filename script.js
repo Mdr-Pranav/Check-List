@@ -256,26 +256,36 @@ document.addEventListener('DOMContentLoaded', () => {
         tasks.forEach((task, index) => {
             const taskItem = document.createElement('li');
             taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
-            taskItem.draggable = true;
             taskItem.dataset.taskId = task.id;
-            
-            // Add drag event listeners
-            taskItem.addEventListener('dragstart', handleDragStart);
-            taskItem.addEventListener('dragover', handleDragOver);
-            taskItem.addEventListener('drop', handleDrop);
-            taskItem.addEventListener('dragend', handleDragEnd);
             
             const taskName = document.createElement('div');
             taskName.className = 'task-name';
             taskName.addEventListener('click', () => toggleTaskCompletion(task.id));
             
-            // Add drag handle
-            const dragHandle = document.createElement('div');
-            dragHandle.className = 'drag-handle';
-            dragHandle.innerHTML = '⋮⋮';
-            dragHandle.addEventListener('mousedown', (e) => {
-                e.stopPropagation(); // Prevent task completion when dragging
+            // Add reorder buttons
+            const reorderButtons = document.createElement('div');
+            reorderButtons.className = 'reorder-buttons';
+            
+            const moveUpBtn = document.createElement('button');
+            moveUpBtn.className = 'move-btn move-up';
+            moveUpBtn.innerHTML = '↑';
+            moveUpBtn.style.display = index === 0 ? 'none' : 'block';
+            moveUpBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                moveTask(index, index - 1);
             });
+            
+            const moveDownBtn = document.createElement('button');
+            moveDownBtn.className = 'move-btn move-down';
+            moveDownBtn.innerHTML = '↓';
+            moveDownBtn.style.display = index === tasks.length - 1 ? 'none' : 'block';
+            moveDownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                moveTask(index, index + 1);
+            });
+            
+            reorderButtons.appendChild(moveUpBtn);
+            reorderButtons.appendChild(moveDownBtn);
             
             const taskText = document.createElement('span');
             taskText.className = 'task-text';
@@ -313,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 deleteTask(task.id);
             });
             
-            taskName.appendChild(dragHandle);
+            taskName.appendChild(reorderButtons);
             taskName.appendChild(taskText);
             taskName.appendChild(taskProgress);
             taskItem.appendChild(taskName);
@@ -428,45 +438,14 @@ document.addEventListener('DOMContentLoaded', () => {
         resetConfirmationDialog.classList.remove('active');
     }
 
-    // Drag and drop functions
-    let draggedTask = null;
-
-    function handleDragStart(e) {
-        draggedTask = this;
-        this.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', this.innerHTML);
-    }
-
-    function handleDragOver(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        const taskElement = e.target.closest('.task-item');
-        if (taskElement && taskElement !== draggedTask) {
-            const rect = taskElement.getBoundingClientRect();
-            const midY = rect.top + rect.height / 2;
-            if (e.clientY < midY) {
-                taskElement.parentNode.insertBefore(draggedTask, taskElement);
-            } else {
-                taskElement.parentNode.insertBefore(draggedTask, taskElement.nextSibling);
-            }
-        }
-    }
-
-    function handleDrop(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }
-
-    function handleDragEnd() {
-        this.classList.remove('dragging');
-        updateTaskOrder();
-    }
-
-    function updateTaskOrder() {
-        const newOrder = Array.from(taskList.children).map(task => parseInt(task.dataset.taskId));
-        tasks.sort((a, b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
+    function moveTask(fromIndex, toIndex) {
+        if (toIndex < 0 || toIndex >= tasks.length) return;
+        
+        const task = tasks[fromIndex];
+        tasks.splice(fromIndex, 1);
+        tasks.splice(toIndex, 0, task);
+        
         saveTasks();
+        renderTasks();
     }
 }); 
