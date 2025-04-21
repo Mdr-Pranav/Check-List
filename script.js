@@ -265,6 +265,11 @@ document.addEventListener('DOMContentLoaded', () => {
             taskItem.addEventListener('drop', handleDrop);
             taskItem.addEventListener('dragend', handleDragEnd);
             
+            // Add touch event listeners for mobile
+            taskItem.addEventListener('touchstart', handleTouchStart, { passive: false });
+            taskItem.addEventListener('touchmove', handleTouchMove, { passive: false });
+            taskItem.addEventListener('touchend', handleTouchEnd);
+            
             const taskName = document.createElement('div');
             taskName.className = 'task-name';
             taskName.addEventListener('click', () => toggleTaskCompletion(task.id));
@@ -274,6 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
             dragHandle.className = 'drag-handle';
             dragHandle.innerHTML = '⋮⋮';
             dragHandle.addEventListener('mousedown', (e) => {
+                e.stopPropagation(); // Prevent task completion when dragging
+            });
+            dragHandle.addEventListener('touchstart', (e) => {
                 e.stopPropagation(); // Prevent task completion when dragging
             });
             
@@ -346,6 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // If it's a new day, reset tasks
         if (lastResetDate !== today) {
+            // Reset all tasks
             tasks.forEach(task => {
                 task.completed = false;
                 task.progress = 0;
@@ -354,6 +363,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 task.lastCompletedByName = null;
             });
             
+            // Reset all device-specific cookies
+            const cookies = document.cookie.split(';');
+            cookies.forEach(cookie => {
+                const [name] = cookie.split('=');
+                const trimmedName = name.trim();
+                // Only delete quest-related cookies for this device
+                if (trimmedName.startsWith('quest_')) {
+                    deleteCookie(trimmedName);
+                }
+            });
+            
+            // Set new reset date
             lastResetDate = today;
             setCookie('quest_last_reset', lastResetDate, 7);
             saveTasks();
@@ -455,5 +476,53 @@ document.addEventListener('DOMContentLoaded', () => {
         const newOrder = Array.from(taskList.children).map(task => parseInt(task.dataset.taskId));
         tasks.sort((a, b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
         saveTasks();
+    }
+
+    // Touch event handling for mobile
+    let touchStartY = 0;
+    let touchStartElement = null;
+    let touchCurrentElement = null;
+
+    function handleTouchStart(e) {
+        touchStartY = e.touches[0].clientY;
+        touchStartElement = this;
+        touchCurrentElement = this;
+        this.classList.add('dragging');
+        e.preventDefault(); // Prevent scrolling while dragging
+    }
+
+    function handleTouchMove(e) {
+        if (!touchStartElement) return;
+        
+        e.preventDefault(); // Prevent scrolling while dragging
+        
+        const touchY = e.touches[0].clientY;
+        const deltaY = touchY - touchStartY;
+        
+        // Find the element under the touch point
+        const elements = document.elementsFromPoint(e.touches[0].clientX, touchY);
+        const taskElement = elements.find(el => el.classList.contains('task-item'));
+        
+        if (taskElement && taskElement !== touchCurrentElement) {
+            const rect = taskElement.getBoundingClientRect();
+            const midY = rect.top + rect.height / 2;
+            
+            if (touchY < midY) {
+                taskElement.parentNode.insertBefore(touchStartElement, taskElement);
+            } else {
+                taskElement.parentNode.insertBefore(touchStartElement, taskElement.nextSibling);
+            }
+            
+            touchCurrentElement = taskElement;
+        }
+    }
+
+    function handleTouchEnd() {
+        if (touchStartElement) {
+            touchStartElement.classList.remove('dragging');
+            updateTaskOrder();
+        }
+        touchStartElement = null;
+        touchCurrentElement = null;
     }
 }); 
